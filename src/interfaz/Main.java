@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import logica.Aliado;
+import logica.Decision;
 import logica.Enemigo;
 import logica.Historia;
 import logica.Jugador;
@@ -14,36 +15,42 @@ public class Main {
 
 	public static void main(String[] args) {
 		String nombre = null;
+		String player = "", senshi = "", fighter = "";
 		
 		Historia sm = new Historia("Sailor Moon: Battle for Earth");
-		Jugador jugador = new Jugador(null, null);
+		Decision ds = new Decision(true);
 		
-		Aliado moon = new Aliado("Usagi", "Moon", "¡Curación Lunar, Acción!", "¡Espiral del Corazón de la Luna!");
-		Aliado mercury = new Aliado("Ami", "Mercury", "¡Burbujas Congelantes de Mercurio, Estallen!", "¡Fulgor del Agua de Mercurio!");
-		Aliado mars = new Aliado("Rei", "Mars", "¡Que los Demonios se Dispersen!", "¡Mandala Ardiente!");
-		Aliado jupiter = new Aliado("Makoto", "Jupiter", "¡Trueno de Júpiter, Resuena!", "¡Relámpago Centella de Júpiter!");
-		Aliado venus = new Aliado("Minako", "Venus", "¡Beso de Amor y Belleza de Venus!", "¡Cadena del Amor de Venus!");
+		Aliado moon = new Aliado("Usagi", "Moon", "Tiara Lunar ¡Acción!", "¡Curación Lunar, Acción!");
+		Aliado mercury = new Aliado("Ami", "Mercury", "¡Burbujas de Mercurio, Estallen!", "¡Fulgor del Agua de Mercurio!");
+		Aliado mars = new Aliado("Rei", "Mars", "¡Mandala Ardiente!", "¡Que los Demonios se Dispersen!");
+		Aliado jupiter = new Aliado("Mako", "Jupiter", "¡Trueno de Júpiter, Resuena!", "¡Ataque de hojas de Roble de Júpiter!");
+		Aliado venus = new Aliado("Mina", "Venus", "¡Rayo Creciente de Venus!", "¡Cadena del Amor de Venus!");
 		
 		//Enemigo eris = new Enemigo("Sailor Eris", "Eris", "¡Posesión fantasmal!", "¡Constelación del espectro de Eris!");
 		//Enemigo ceres = new Enemigo("Sailor Ceres", "Ceres", "¡Ataque antigravedad!", "¡Vibración cósmica de Ceres!");
 		//Enemigo humea = new Enemigo("Sailor Humea", "Humea", "¡Gotas envenenadas!", "¡Radiación tóxica de Humea!");
-		Enemigo sun = new Enemigo("Sailor Sun", "Sun", "¡Reflejar!", "¡Tormenta de Calor Solar!");
+		Enemigo bmoon = new Enemigo("Nyx", "Dark Moon", "atk1", "atk2");
 		
-		//menu
+		String pGender = ds.eligirGenero();
+		Jugador jugador = new Jugador("Player", pGender);
 		
-		JOptionPane.showMessageDialog(null, "Ya es casi la hora.\nTengo que irme ya...", "",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("")));
-		JOptionPane.showMessageDialog(null, "", "",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("acto0.jpg")));
-		JOptionPane.showMessageDialog(null, "Hoy es un día muy emocionante para todos:\nel rarísimo eclipse anular está a punto de ocurrir.\nAl igual que vos, muchos se están reuniendo\nen el Parque Yoyogi para presenciar el fenómeno.\nEn el camino, alguien acaba chocándote.", "Narración",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("picnic.jpg")));
+		if (pGender.equals("Male")) {
+			player = "playerm.png";
+			senshi = "earthm.png";
+			fighter = "earthmfight.png";
+		} else {
+			player = "playerf.png";
+			senshi = "earthf.png";
+			fighter = "earthffight.png";
+		}
 		
-		sm.Decision1(jupiter, jugador);
-		
-		JOptionPane.showMessageDialog(null, venus.getNombre() + ":\nEso es lo que pasa cuando miras a los chicos.", "Diálogo",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("minascold.jpg")));
-		JOptionPane.showMessageDialog(null, jupiter.getNombre() + ":\nEs qué es exactamente mi tipo favorito...", "Diálogo",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("makoshy.jpg")));
-		JOptionPane.showMessageDialog(null, venus.getNombre() + ":\nMako, siempre dices eso...", "Diálogo",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("minasus.jpg")));
-		
+		sm.Intro1(jugador, moon, mercury, mars, jupiter, venus);
+		ds.Decision1(jugador, moon, mercury, mars, jupiter, venus);
+		ds.tutorialDecision(jugador, moon, mercury, mars, jupiter, venus, player);
+
 		while (nombre == null || nombre.length() < 2 || !nomAlfabetico(nombre)) {
             try {
-                nombre = (String) JOptionPane.showInputDialog(null, venus.getNombre() + ":\nAh, por cierto, ¿cómo te llamas?", "Ingresar un nombre para su personaje", JOptionPane.DEFAULT_OPTION, new ImageIcon(Main.class.getResource("pjname.jpg")), null, null);
+                nombre = JOptionPane.showInputDialog("Cual es el nombre de tu personaje?");
 
                 if (nombre != null && nombre.length() < 2) {
                     JOptionPane.showMessageDialog(
@@ -64,36 +71,23 @@ public class Main {
                 System.exit(0);
             }
         }
+
+		Personaje earth = new Personaje(nombre, "Earth", "¡Semillas de la Tierra, germinen!", "¡Ventiscas espirales de la Tierra!");
 		
-		Personaje earth = new Personaje(nombre, "Earth", "¡Semillas de la Tierra, germinen!", "¡Ventisca de pétalos de la Tierra!");
+		sm.Intro2(earth, jugador, moon, mercury, mars, jupiter, venus);
+		sm.Escena1(jugador, moon, mercury, mars, jupiter, venus, earth, ds.Decision2(jugador, moon, mercury, mars, jupiter, venus), player);
+		sm.Escena2(jugador, moon, mercury, mars, jupiter, venus, bmoon, earth);
+		ds.Decision3(jugador, moon, mercury, mars, jupiter, venus);
+		sm.Escena3(jugador, moon, mercury, mars, jupiter, venus, earth, bmoon, senshi);
 		
-		JOptionPane.showMessageDialog(null, venus.getNombre() + ":\nMucho gusto, " + earth.getNombre() + ".\nYo soy Minako, pero puedes llamarme Mina.\nEsta es Makoto.", "Diálogo",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("minaintro.jpg")));
-		venus.setNombre("Mina");
+		JOptionPane.showMessageDialog(null, "Luna:\nElige una Sailor Guerrera para enfrentar a Nyx contigo.\nCada una tiene sus propios ataques.\nElige la mejor opción para enfrentarte a cada enemigo.",
+				"Tutorial",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("selectsailor.png")));
 		
-		if (jupiter.getAfinidad()>3) {
-			JOptionPane.showMessageDialog(null, jupiter.getNombre() + ":\nPuedes llamarme Mako.\n¡Oye, tengo una idea!", "Diálogo",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("makointro.png")));
-			jupiter.setNombre("Mako");
-		} else {
-			JOptionPane.showMessageDialog(null, jupiter.getNombre() + ":\nBueno, tenemos que irnos ahora.", "Diálogo",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("makoglare.jpg")));
-			JOptionPane.showMessageDialog(null, venus.getNombre() + ":\nEspera… ¿estás sola?", "Diálogo",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("minatender.jpg")));
-		}
-		
-		sm.Escena1(sm.Decision2(venus, jugador), earth);
-		sm.Escena2(moon, mercury, mars, jupiter, venus, sun);
-		sm.Decision3(jugador);
-		sm.Escena3(earth, moon, sun);
-		JOptionPane.showMessageDialog(null, "Luna:\nElige una Sailor Guerrera para enfrentar a Sailor Sun contigo.\nCada una tiene sus propios ataques.\nElige la mejor opción para enfrentarte a cada enemigo.", "Tutorial",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("smchoice.jpg")));
-		sm.batallaTutorial(earth, moon, mercury, mars, jupiter, venus, sun, sm.decidirBatalla(jugador, earth, moon, mercury, mars, jupiter, venus, sun, sm.eligirAtaque(earth, moon, mercury, mars, jupiter, venus, sun)));
-		sm.Escena4(mars, jupiter, sun);
+		ds.batallaTutorial(earth, jugador, moon, mercury, mars, jupiter, venus, bmoon, ds.decidirBatalla(earth, moon, mercury, mars, jupiter, venus, bmoon, ds.eligirAtaque(earth, moon, mercury, mars, jupiter, venus, bmoon)));
+		sm.Escena4(jugador, moon, mercury, mars, jupiter, venus, bmoon);
 		sm.finDemo(moon, mercury, mars, jupiter, venus);
 	}
 
-
-	
-
-	
-
-	
 
 	
 	private static boolean nomAlfabetico(String nombre) {
@@ -101,6 +95,3 @@ public class Main {
     }
 
 }
-
-// JOptionPane.showMessageDialog(null, "", "Narración",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("")));
-// JOptionPane.showMessageDialog(null, + ":\n ", "Diálogo",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("")));
