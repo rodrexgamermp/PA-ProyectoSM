@@ -1,4 +1,4 @@
-package logica;
+package dll;
 
 public class Enemigo extends Personaje implements Poder {
 	

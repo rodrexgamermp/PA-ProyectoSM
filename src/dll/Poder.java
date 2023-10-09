@@ -1,4 +1,4 @@
-package logica;
+package dll;
 
 public interface Poder {
 	

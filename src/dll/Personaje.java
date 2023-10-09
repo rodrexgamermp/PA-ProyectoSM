@@ -1,4 +1,4 @@
-package logica;
+package dll;
 
 public class Personaje {
 	
@@ -53,27 +53,22 @@ public class Personaje {
 				+ "]";
 	}
 	
-	public void Transformacion(boolean transformada) {
-		
-		if (transformada) {
+	public void transformarse(boolean transformed) {
+		if (transformed) {
 			this.setNombre("Sailor " + this.getPlaneta());
 		} else {
-			if (this.planeta.equals("Moon")) {
+			if (this.getPlaneta().equals("Moon")) {
 				this.setNombre("Usagi");
-			} else if (this.planeta.equals("Mercury")) {
+			} else if (this.getPlaneta().equals("Mercury")) {
 				this.setNombre("Ami");
-			} else if (this.planeta.equals("Mars")) {
+			} else if (this.getPlaneta().equals("Mars")) {
 				this.setNombre("Rei");
-			} else if (this.planeta.equals("Jupiter")) {
+			} else if (this.getPlaneta().equals("Jupiter")) {
 				this.setNombre("Mako");
-			} else if (this.planeta.equals("Venus")) {
+			} else if (this.getPlaneta().equals("Venus")) {
 				this.setNombre("Mina");
 			}
-			
-			
-			
 		}
-		
 	}
 
 }
