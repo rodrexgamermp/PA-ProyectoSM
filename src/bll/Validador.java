@@ -3,9 +3,11 @@ package bll;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.LinkedList;
 
 import javax.swing.JOptionPane;
 
+import dll.Aliado;
 import dll.Conexion;
 import dll.Jugador;
 
@@ -59,10 +61,9 @@ public class Validador {
 	    		jugador.setId(idGenerado);
     		return true;
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "query failed: " + e);
 			return false;
-		}
-		
-		//try catch nuevo progreso
+		}	
 	}
 	
 	public boolean arNombre(Jugador jugador) {
@@ -94,7 +95,15 @@ public class Validador {
 		                        "Error",
 		                        JOptionPane.ERROR_MESSAGE
 		                );
-		            }
+		            } else if (nomRepetido(nombre)) {
+	                    JOptionPane.showMessageDialog(
+	                            null,
+	                            "El nombre ya está en uso. Por favor, elija otro.",
+	                            "Error",
+	                            JOptionPane.ERROR_MESSAGE
+	                    );
+	                    nombre=null;
+	                }
 		        }
 		        jugador.setNombre(nombre);
 		    } catch (Exception e) {
@@ -109,15 +118,165 @@ public class Validador {
 	    		fetch.executeUpdate();
 	    		return true;
 			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "query failed: " + e);
 				return false;
 			} 
 	}
 	
-	public void arModProgreso(Jugador jugador, int acto, int seccion) {
+	private boolean nomRepetido(String nombre) {
+	    try {
+	        String sql = "SELECT COUNT(*) FROM `jugador` WHERE `nomJugador`=?";
+	        fetch = cnx.prepareStatement(sql);
+	        fetch.setString(1, nombre);
+	        ResultSet resultados = fetch.executeQuery();
+	        if (resultados.next()) {
+	            int count = resultados.getInt(1);
+	            return count > 0;
+	        }
+	    } catch (Exception e) {
+	    	JOptionPane.showMessageDialog(null, "query failed: " + e);
+	    }
+	    return false;
+	}
+	
+	public void arAltaAfinidad(Jugador jugador) {
+		
+		try {
+            String sql = "INSERT INTO `afinidad`(`personaje`, `jugador`) VALUES (?,?)";
+            fetch = cnx.prepareStatement(sql);
+            
+            int[] personajes = {3, 4, 5, 6};
+            
+            for (int personaje : personajes) {
+                fetch.setInt(1, personaje);
+                fetch.setInt(2, jugador.getId());
+                fetch.executeUpdate();
+            }
+    		
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "query failed: " + e);
+		}	
 		
 	}
 	
-	public void arBajaJugador(Jugador jugador) {
+	public void arModAfinidad(Jugador jugador, Aliado personaje) {
+		try {
+			int personajeId = 0;
+
+			if (personaje.getPlaneta().equals("Mercury")) {
+	            personajeId = 3;
+	        } else if (personaje.getPlaneta().equals("Mars")) {
+	            personajeId = 4;
+	        } else if (personaje.getPlaneta().equals("Jupiter")) {
+	            personajeId = 5;
+	        } else if (personaje.getPlaneta().equals("Venus")) {
+	            personajeId = 6;
+	        }
+			
+	        String sql = "UPDATE `afinidad` SET `cantidad` = ? " +
+	                     "WHERE `jugador` = ? AND `personaje` = ?";
+	        fetch = cnx.prepareStatement(sql);
+	        fetch.setInt(1, personaje.getAfinidad());
+	        fetch.setInt(2, jugador.getId());
+	        fetch.setInt(3, personajeId);
+	        fetch.executeUpdate();
+	    } catch (Exception e) {
+	    	JOptionPane.showMessageDialog(null, "query failed: " + e);
+	    }
+	}
+	
+	public void arModKarma(Jugador jugador) {
+		try {	
+	        String sql = "UPDATE `jugador` SET `karma`=? WHERE idJugador=?";
+	        fetch = cnx.prepareStatement(sql);
+	        fetch.setInt(1, jugador.getKarma());
+	        fetch.setInt(2, jugador.getId());
+	        fetch.executeUpdate();
+	    } catch (Exception e) {
+	    	JOptionPane.showMessageDialog(null, "query failed: " + e);
+	    }	
+	}
+	
+	public LinkedList<Jugador> arCargarProgreso() {
+		LinkedList<Jugador> jugadores = new LinkedList<Jugador>();
+		String nombre = "", genero = "";
+		int id = 0, gender = 0, karma = 0, progreso = 0;
+		
+		try {
+			String sql = "SELECT * FROM `jugador`";
+			fetch = cnx.prepareStatement(sql);
+			ResultSet resultados  = fetch.executeQuery();
+	    	while (resultados.next()) {
+				id = resultados.getInt(1);
+				nombre = resultados.getString(2);
+				karma = resultados.getInt(3);
+				gender = resultados.getInt(4);
+				progreso = resultados.getInt(5);
+	    	
+	    	if (gender==1) {
+	    		genero = "Male";
+			} else {
+				genero = "Female";
+			}
+	
+	    	jugadores.add(new Jugador(id, nombre, genero, karma, progreso));
+	    	
+	    	}
+	    	
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "query failed: " + e);
+		}
+		
+		return jugadores;
+	}
+
+	public LinkedList<Aliado> arCargarAfinidad(Jugador jugador) {
+	    LinkedList<Aliado> afinidades = new LinkedList<Aliado>();
+
+	    try {
+	        String sql = "SELECT a.cantidad, a.personaje FROM `afinidad` a " +
+	                     "INNER JOIN `personaje` p ON a.personaje = p.idPersonaje " +
+	                     "WHERE a.jugador = ?";
+	        fetch = cnx.prepareStatement(sql);
+	        fetch.setInt(1, jugador.getId());
+	        ResultSet resultados = fetch.executeQuery();
+
+	        while (resultados.next()) {
+	            int cantidad = resultados.getInt(1);
+	            int personajeId = resultados.getInt(2);
+
+	            if (personajeId==3) {
+	            	afinidades.add(new Aliado("Ami", "Mercury", "atk1", "atk2", cantidad));
+				} else if (personajeId==4) {
+					afinidades.add(new Aliado("Rei", "Mars", "atk1", "atk2", cantidad));
+				} else if (personajeId==5) {
+					afinidades.add(new Aliado("Mako", "Jupiter", "atk1", "atk2", cantidad));
+				} else if (personajeId==6) {
+					afinidades.add(new Aliado("Mina", "Venus", "atk1", "atk2", cantidad));
+				}
+
+	        }
+	    } catch (Exception e) {
+	    		JOptionPane.showMessageDialog(null, "query failed: " + e);
+	    }
+
+	    return afinidades;
+	}
+	
+	public void arModProgreso(Jugador jugador) {
+		try {	
+	        String sql = "UPDATE `jugador` SET `progreso`=? WHERE idJugador=?";
+	        fetch = cnx.prepareStatement(sql);
+	        fetch.setInt(1, jugador.getProgreso());
+	        fetch.setInt(2, jugador.getId());
+	        fetch.executeUpdate();
+	    } catch (Exception e) {
+	    	JOptionPane.showMessageDialog(null, "query failed: " + e);
+	    }	
+	}
+	
+	public void arBajaJugador(LinkedList<Jugador> jugadores) {
+			
 		
 	}
 	

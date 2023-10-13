@@ -4,9 +4,9 @@ public class Aliado extends Personaje implements Poder {
 
 	private int afinidad;
 
-	public Aliado(String nombre, String planeta, String poder1, String poder2) {
+	public Aliado(String nombre, String planeta, String poder1, String poder2, int afinidad) {
 		super(nombre, planeta, poder1, poder2);
-		this.afinidad = 3;
+		this.afinidad = afinidad;
 	}
 
 	public int getAfinidad() {

@@ -28,7 +28,7 @@ public class Historia {
 	}
 
 	public void Intro1(Jugador jugador, Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus) {
-		JOptionPane.showMessageDialog(null, "Ya es casi la hora.\nTengo que irme ya...", "",  
+		JOptionPane.showMessageDialog(null, "Ya es casi la hora.\nTengo que irme...", "",  
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("")));
 		JOptionPane.showMessageDialog(null, "", "",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("acto0.jpg")));
 		JOptionPane.showMessageDialog(null, "Hoy es un día muy emocionante para todos:\nel rarísimo eclipse anular está a punto de ocurrir.\nAl igual que vos, muchos se están reuniendo\nen el Parque Yoyogi para presenciar el fenómeno.\nEn el camino, alguien acaba chocándote.", 
@@ -72,13 +72,13 @@ public class Historia {
 			JOptionPane.showMessageDialog(null, moon.getNombre() + ":\n¿Tú también, mamo-chan?💔",
 					"Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),
 					JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("Usagi.png")));
-			JOptionPane.showMessageDialog(null, jupiter.getNombre() + ":\n¡Oooooi!\n¡Nosotros estamos acá!",
+			JOptionPane.showMessageDialog(null, jupiter.getNombre() + ":\n¡Ooooee!\n¡Estamos acá!",
 					"Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),
 					JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("Mako.png")));
 			JOptionPane.showMessageDialog(null, mercury.getNombre() + ":\n¡Por fin llegaron!",
 					"Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),
 					JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("Ami.png")));
-			JOptionPane.showMessageDialog(null, moon.getNombre() + ":\nOh, ¿eso significa que podemos comer ahora?",
+			JOptionPane.showMessageDialog(null, moon.getNombre() + ":\nOh, ¿eso significa que ya podemos comer?",
 					"Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),
 					JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("Usagi.png")));
 			JOptionPane.showMessageDialog(null, "Rei mira a Usagi con cara de desaprobación.",
@@ -119,7 +119,7 @@ public class Historia {
 	}
 	
 	public void Escena2(Jugador jugador, Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus, Enemigo enemigo, Personaje personaje) {	
-		JOptionPane.showMessageDialog(null, "El día comienza a convertirse en noche\nmientras observas la luna ponerse frente al sol.\nPoco a poco, el sol se va convirtiendo\nen un anillo de fuego.\nSe escucha a la gente exclamando sorprendida,\nestán tratando de grabar el evento.\nPero pronto las exclamaciones\nse convierten en bostezo.\nNotas que la gente a tu alrededor se desmaya.",
+		JOptionPane.showMessageDialog(null, "El día comienza a convertirse en noche\nmientras observas la luna ponerse frente a\nsol.\nPoco a poco, el sol se va convirtiendo en\nun anillo de fuego.\nSe escucha a la gente exclamando\nsorprendida, pero pronto las exclamaciones\nse convierten en bostezo.\nNotas que la gente a tu alrededor se\ndesmaya.",
 				"Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("eclipse.jpg")));
 		JOptionPane.showMessageDialog(null, "Mamoru:\nAlgo anda mal.",
@@ -254,7 +254,7 @@ public class Historia {
 		JOptionPane.showMessageDialog(null, "Luna:\nEs como sospechaba.\n¡Rápido, pídele a la Tierra que te despierte!",
 				"Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("lunarp1.png")));
-		JOptionPane.showMessageDialog(null, "'Despiértame…?' Las palabras te confunden.\nRecordando cómo se transformaron las chicas, haces lo mismo:\n“¡Por ​​el poder del planeta Tierra, despiértame!”\nY pronto su ropa da paso a un traje de combate.",
+		JOptionPane.showMessageDialog(null, "'Despiértame…?' Las palabras te confunden.\nRecordando cómo se transformaron las chicas, haces lo mismo:\n“¡Por ​​el poder del planeta Tierra, despiértame!”",
 				"Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource(icoPlayer)));
 		
@@ -281,7 +281,7 @@ public class Historia {
 	}
 	
 	public void Escena4(Jugador jugador, Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus, Enemigo enemigo) {
-		JOptionPane.showMessageDialog(null, "En ese momento, Sailor Moon se desmaya frente a todos, causando preocupación.\nTuxedo Mask la toma en sus brazos y se da cuenta de que todavía está viva,\npero su cuerpo está frío como la noche.",
+		JOptionPane.showMessageDialog(null, "En ese momento, Sailor Moon se desmaya\nfrente a todos, causando preocupación.\nTuxedo Mask la toma en sus brazos y se da\ncuenta de que todavía está viva, pero su\ncuerpo está frío como la noche.",
 				"Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("")));
 		JOptionPane.showMessageDialog(null, mars.getNombre() + ":\n¿Por qué haces esto?",

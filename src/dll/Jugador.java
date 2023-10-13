@@ -8,13 +8,15 @@ public class Jugador {
 	private String nombre;
 	private String genero;
 	private int karma;
+	private int progreso;
 
-	public Jugador(int id, String nombre, String genero) {
+	public Jugador(int id, String nombre, String genero, int karma, int progreso) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.genero = genero;
-		this.karma = 0;
+		this.karma = karma;
+		this.progreso = progreso;
 	}
 
 	public int getId() {
@@ -49,9 +51,18 @@ public class Jugador {
 		this.karma = karma;
 	}
 
+	public int getProgreso() {
+		return progreso;
+	}
+
+	public void setProgreso(int progreso) {
+		this.progreso = progreso;
+	}
+
 	@Override
 	public String toString() {
-		return "Jugador [nombre=" + nombre + ", genero=" + genero + ", karma=" + karma + "]";
+		return "Jugador [id=" + id + ", nombre=" + nombre + ", genero=" + genero + ", karma=" + karma + ", progreso="
+				+ progreso + "]";
 	}
 
 	public String definirGenero() {
