@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 
 import bll.Validador;
 import dll.Aliado;
+import dll.Batalla;
 import dll.Conexion;
 import dll.Decision;
 import dll.Enemigo;
@@ -26,11 +27,12 @@ public class Main {
 
 		Historia sm = new Historia("Sailor Moon: Battle for Earth");
 		Decision ds = new Decision(true);
+		Batalla bt = new Batalla(0);
 		Jugador jugador = new Jugador(0, null, null, 0, 1);
 
 		Personaje earth = new Personaje(null, "Earth", "¡Semillas de la Tierra, germinen!", "¡Ventiscas espirales de la Tierra!");
 		Aliado moon = new Aliado("Usagi", "Moon", "Tiara Lunar ¡Acción!", "¡Curación Lunar, Acción!", 3);
-		Aliado mercury = new Aliado("Ami", "Mercury", "¡Burbujas de Mercurio, Estallen!", "¡Fulgor del Agua de Mercurio!", 3);
+		Aliado mercury = new Aliado("Ami", "Mercury", "¡Burbujas Congelantes de Mercurio, Estallen!", "¡Fulgor del Agua de Mercurio!", 3);
 		Aliado mars = new Aliado("Rei", "Mars", "¡Mandala Ardiente!", "¡Que los Demonios se Dispersen!", 3);
 		Aliado jupiter = new Aliado("Mako", "Jupiter", "¡Trueno de Júpiter, Resuena!", "¡Ataque de hojas de Roble de Júpiter!", 3);
 		Aliado venus = new Aliado("Mina", "Venus", "¡Rayo Creciente de Venus!", "¡Cadena del Amor de Venus!", 3);
@@ -38,7 +40,7 @@ public class Main {
 		//Enemigo ceres = new Enemigo("Sailor Ceres", "Ceres", "¡Rocas afiladas de Ceres, dispersaos!", "¡Ondas gravitacionales de Ceres!");
 		//Enemigo eris = new Enemigo("Sailor Eris", "Eris", "Estacas cristalinas de Eris, ¡congelad!", "¡Temible tormenta de nieve de Eris!");
 		//Enemigo humea = new Enemigo("Sailor Humea", "Humea", "¡Ciclón perforador de Humea, devastación!", "¡Proyección astral de Humea!");
-		Enemigo bmoon = new Enemigo("Nyx", "Dark Moon", "Eclipse anular, ¡manifiéstate!", "¡Ondas sonoras de la Luna Oscura!");
+		Enemigo dmoon = new Enemigo("Nyx", "Dark Moon", "Eclipse anular, ¡manifiéstate!", "¡Ondas sonoras de la Luna Oscura!");
 		
 		//menu = new game, load game, biografia(proximamente), cambiar nombre, borrar usuario, salir
 		
@@ -131,25 +133,27 @@ public class Main {
 			}
 			
 		case 3: //Llegada de Nyx
-			sm.Escena2(jugador, moon, mercury, mars, jupiter, venus, bmoon, earth);
+			sm.Escena2(jugador, moon, mercury, mars, jupiter, venus, dmoon, earth);
 			ds.Decision3(jugador, moon, mercury, mars, jupiter, venus);
 			jugador.setProgreso(4);
 			valid.arModProgreso(jugador);
 			
 		case 4: //Surge Tuxedo Mask
-			sm.Escena3(jugador, moon, mercury, mars, jupiter, venus, earth, bmoon, player, fighter);
+			sm.Escena3(jugador, moon, mercury, mars, jupiter, venus, earth, dmoon, player, fighter);
 			jugador.setProgreso(5);
 			valid.arModProgreso(jugador);
 
 		case 5: //Batalla Tutorial
+			moon.transformarse(true); mercury.transformarse(true); mars.transformarse(true); jupiter.transformarse(true); venus.transformarse(true);
 			JOptionPane.showMessageDialog(null, "Luna:\nElige una Sailor Guerrera para enfrentar a Nyx contigo.\nCada una tiene sus propios ataques.\nElige la mejor opción para enfrentarte a cada enemigo.",
-					"Tutorial",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("selectsailor.png")));			
-			ds.batallaTutorial(earth, jugador, moon, mercury, mars, jupiter, venus, bmoon, ds.decidirBatalla(jugador, earth, moon, mercury, mars, jupiter, venus, bmoon, ds.eligirAtaque(earth, moon, mercury, mars, jupiter, venus, bmoon)));
+					"Tutorial",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource("selectsailor.png")));							
+			bt.tutorial(earth, jugador, moon, mercury, mars, jupiter, venus, dmoon, bt.definirGanador(dmoon, dmoon.usarPoder((int) (Math.random() * 2)), bt.eligirAtaque(mercury, mars, jupiter, venus)));
 			jugador.setProgreso(6);
 			valid.arModProgreso(jugador);
+			//dowhile nas proximas batalhas
 			
 		case 6: //Fin acto 0
-			sm.Escena4(jugador, moon, mercury, mars, jupiter, venus, bmoon);
+			sm.Escena4(jugador, moon, mercury, mars, jupiter, venus, earth, dmoon);
 			
 			//update seccion
 			

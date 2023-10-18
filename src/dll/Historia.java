@@ -232,6 +232,7 @@ public class Historia {
 	}
 	
 	public void Escena3(Jugador jugador, Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus, Personaje personaje, Enemigo enemigo, String icoPlayer, String icoSenshi) {
+		moon.transformarse(true); mercury.transformarse(true); mars.transformarse(true); jupiter.transformarse(true); venus.transformarse(true);
 		JOptionPane.showMessageDialog(null, "Tuxedo Mask:\nLa gente duerme para tener buenos sueños,\n¡pero tú los convertiste en pesadillas!\n¡Sailor Moon, ahora!",
 				"Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("tmask.png")));
@@ -280,7 +281,8 @@ public class Historia {
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("luna.png")));
 	}
 	
-	public void Escena4(Jugador jugador, Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus, Enemigo enemigo) {
+	public void Escena4(Jugador jugador, Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus, Personaje personaje, Enemigo enemigo) {
+		moon.transformarse(true); mercury.transformarse(true); mars.transformarse(true); jupiter.transformarse(true); venus.transformarse(true); personaje.transformarse(true);
 		JOptionPane.showMessageDialog(null, "En ese momento, Sailor Moon se desmaya\nfrente a todos, causando preocupación.\nTuxedo Mask la toma en sus brazos y se da\ncuenta de que todavía está viva, pero su\ncuerpo está frío como la noche.",
 				"Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("")));
@@ -302,9 +304,15 @@ public class Historia {
 		JOptionPane.showMessageDialog(null, "Luna:\nChicos...\nHa llegado el momento de que conozcan\nla historia de Dark Moon y Sailor Earth.",
 				"Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),
 				JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("luna.png")));
+		moon.transformarse(false); mercury.transformarse(false); mars.transformarse(false); jupiter.transformarse(false); venus.transformarse(false); personaje.transformarse(false);
 	}
 	
-	public void finDemo(Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus) {
+	
+	
+	
+	
+	
+	public void fin(Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus) {
 		moon.transformarse(false); mercury.transformarse(false); mars.transformarse(false); jupiter.transformarse(false); venus.transformarse(false);
 		int max = -100;
 		String nomMax = "";

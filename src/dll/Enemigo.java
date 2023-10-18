@@ -24,8 +24,6 @@ public class Enemigo extends Personaje implements Poder {
 
 	@Override
 	public String usarPoder(int atacar) {
-		atacar = (int) (Math.random() * 2);
-		
 		if (atacar==0) {
 			return this.getPoder1();
 		} else {
