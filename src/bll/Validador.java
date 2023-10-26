@@ -142,24 +142,34 @@ public class Validador {
 	    return false;
 	}
 	
-	public void arAltaAfinidad(Jugador jugador) {
+	public void arAltaStatus(Jugador jugador) {
 		
 		try {
-            String sql = "INSERT INTO `afinidad`(`cantidad`, `personaje`, `jugador`) VALUES (?,?,?)";
+            String sql = "INSERT INTO `status`(`afinidad`, `salud`, `condicion`, `personaje`, `jugador`) VALUES (?, ?, ?, ?, ?)";
             fetch = cnx.prepareStatement(sql);
             
             int[] personajes = {3, 4, 5, 6, 11, 12, 13, 14};
             
             for (int personaje : personajes) {
-            	if (personaje == 3 || personaje == 4 || personaje == 5 || personaje == 6) {
+            	if (personaje < 7) {
             		fetch.setInt(1, 3);
-            		fetch.setInt(2, personaje);
-                    fetch.setInt(3, jugador.getId());
+            		fetch.setInt(2, 0);
+            		fetch.setInt(3, 1);
+            		fetch.setInt(4, personaje);
+                    fetch.setInt(5, jugador.getId());
                     fetch.executeUpdate();
 				} else {
 					fetch.setInt(1, 0);
-            		fetch.setInt(2, personaje);
-                    fetch.setInt(3, jugador.getId());
+					if (personaje==11 || personaje==12) {
+						fetch.setInt(2, 2);
+					} else if (personaje==13) {
+						fetch.setInt(2, 3);
+					} else if (personaje==14) {
+						fetch.setInt(2, 4);
+					}
+            		fetch.setInt(3, 2);
+            		fetch.setInt(4, personaje);
+                    fetch.setInt(5, jugador.getId());
                     fetch.executeUpdate();
 				}
                 
@@ -171,34 +181,52 @@ public class Validador {
 		
 	}
 	
-	public void arModAfinidad(Jugador jugador, Aliado personaje) {
+	public void arModStatus(Jugador jugador, Aliado aliado, Enemigo enemigo) {
 		try {
-			int personajeId = 0;
-
-			if (personaje.getPlaneta().equals("Mercury")) {
+			int personajeId = 0, cond = 0;
+			
+			if (aliado.getPlaneta().equals("Mercury")) {
 	            personajeId = 3;
-	        } else if (personaje.getPlaneta().equals("Mars")) {
+	        } else if (aliado.getPlaneta().equals("Mars")) {
 	            personajeId = 4;
-	        } else if (personaje.getPlaneta().equals("Jupiter")) {
+	        } else if (aliado.getPlaneta().equals("Jupiter")) {
 	            personajeId = 5;
-	        } else if (personaje.getPlaneta().equals("Venus")) {
+	        } else if (aliado.getPlaneta().equals("Venus")) {
 	            personajeId = 6;
-	        } else if (personaje.getPlaneta().equals("Ceres")) {
+	        } else if (enemigo.getPlaneta().equals("Ceres")) {
 	            personajeId = 11;
-	        } else if (personaje.getPlaneta().equals("Eris")) {
+	        } else if (enemigo.getPlaneta().equals("Eris")) {
 	            personajeId = 12;
-	        } else if (personaje.getPlaneta().equals("Humea")) {
+	        } else if (enemigo.getPlaneta().equals("Humea")) {
 	            personajeId = 13;
-	        } else if (personaje.getPlaneta().equals("Dark Moon")) {
+	        } else if (enemigo.getPlaneta().equals("Dark Moon")) {
 	            personajeId = 14;
 	        }
 			
-	        String sql = "UPDATE `afinidad` SET `cantidad` = ? " +
-	                     "WHERE `jugador` = ? AND `personaje` = ?";
-	        fetch = cnx.prepareStatement(sql);
-	        fetch.setInt(1, personaje.getAfinidad());
-	        fetch.setInt(2, jugador.getId());
-	        fetch.setInt(3, personajeId);
+			if (enemigo.getCondicion().equals("Aliado")) {
+				cond = 1;
+			} else if (enemigo.getCondicion().equals("Enemigo")) {
+				cond = 2;
+			} else if (enemigo.getCondicion().equals("Curado")) {
+				cond = 3;
+			} else if (enemigo.getCondicion().equals("Derrotado")) {
+				cond = 4;
+			}
+			
+	        String sql = "UPDATE `status` SET `afinidad` = ?,  `salud`= ?, `condicion`= ? " +
+	                     "WHERE `jugador` = ? AND `personaje` = ?";        
+	        fetch = cnx.prepareStatement(sql); 
+	        if (personajeId<7) {
+	        	fetch.setInt(1, aliado.getAfinidad());
+	        	fetch.setInt(2, 0);
+	        	fetch.setInt(3, 1);
+			} else {
+				fetch.setInt(1, enemigo.getConfianza());
+				fetch.setInt(2, enemigo.getSalud());
+	        	fetch.setInt(3, cond);
+			}
+	        fetch.setInt(4, jugador.getId());
+	        fetch.setInt(5, personajeId);
 	        fetch.executeUpdate();
 	    } catch (Exception e) {
 	    	JOptionPane.showMessageDialog(null, "query failed: " + e);
@@ -250,29 +278,28 @@ public class Validador {
 		return jugadores;
 	}
 
-	public LinkedList<Aliado> arCargarAfinidad(Jugador jugador) {
-	    LinkedList<Aliado> afinidades = new LinkedList<Aliado>();
-
+	public LinkedList<Aliado> arCargarStatusAliado(Jugador jugador) {
+	    LinkedList<Aliado> aliados = new LinkedList<Aliado>();
+	    int afinidad = 0, id = 0;
+	    
 	    try {
-	        String sql = "SELECT a.cantidad, a.personaje FROM `afinidad` a " +
-	                     "INNER JOIN `personaje` p ON a.personaje = p.idPersonaje " +
-	                     "WHERE a.jugador = ?";
+	        String sql = "SELECT afinidad, personaje FROM status WHERE jugador = ?";
 	        fetch = cnx.prepareStatement(sql);
 	        fetch.setInt(1, jugador.getId());
 	        ResultSet resultados = fetch.executeQuery();
 
 	        while (resultados.next()) {
-	            int cantidad = resultados.getInt(1);
-	            int personajeId = resultados.getInt(2);
+	        	afinidad = resultados.getInt(1);
+	        	id = resultados.getInt(2);
 
-	            if (personajeId==3) {
-	            	afinidades.add(new Aliado("Ami", "Mercury", "atk1", "atk2", cantidad));
-				} else if (personajeId==4) {
-					afinidades.add(new Aliado("Rei", "Mars", "atk1", "atk2", cantidad));
-				} else if (personajeId==5) {
-					afinidades.add(new Aliado("Mako", "Jupiter", "atk1", "atk2", cantidad));
-				} else if (personajeId==6) {
-					afinidades.add(new Aliado("Mina", "Venus", "atk1", "atk2", cantidad));
+	            if (id==3) {
+	            	aliados.add(new Aliado("Ami", "Mercury", "¡Burbujas Congelantes de Mercurio, Estallen!", "¡Fulgor del Agua de Mercurio!", afinidad));
+				} else if (id==4) {
+					aliados.add(new Aliado("Rei", "Mars", "¡Mandala Ardiente!", "¡Que los Demonios se Dispersen!", afinidad));
+				} else if (id==5) {
+					aliados.add(new Aliado("Mako", "Jupiter", "¡Trueno de Júpiter, Resuena!", "¡Ataque de hojas de Roble de Júpiter!", afinidad));
+				} else if (id==6) {
+					aliados.add(new Aliado("Mina", "Venus", "¡Rayo Creciente de Venus!", "¡Cadena del Amor de Venus!", afinidad));
 				}
 
 	        }
@@ -280,37 +307,36 @@ public class Validador {
 	    		JOptionPane.showMessageDialog(null, "query failed: " + e);
 	    }
 
-	    return afinidades;
+	    return aliados;
 	}
 
-	public LinkedList<Enemigo> arCargarEnemigos(Jugador jugador) {
+	public LinkedList<Enemigo> arCargarStatusEnemigo(Jugador jugador) {
 	    LinkedList<Enemigo> enemigos = new LinkedList<Enemigo>();
-	    int confianza = 0, personajeId = 0, salud = 0;
+	    int confianza = 0, salud = 0, id = 0;
 	    String condicion = "";
 	    
 	    try {
-	        String sql = "SELECT a.cantidad, a.personaje, p.salud, c.nomCondicion "
-	        		+ "FROM afinidad a "
-	        		+ "INNER JOIN personaje p ON a.personaje = p.idPersonaje "
-	        		+ "INNER JOIN condicion c ON p.condicion = c.idCondicion "
-	        		+ "WHERE `jugador` = ?";
+	    	String sql = "SELECT s.afinidad, s.salud, c.nomCondicion, s.personaje FROM status s "
+	        		+ "INNER JOIN personaje p ON s.personaje = p.idPersonaje "
+	        		+ "INNER JOIN condicion c ON s.condicion = c.idCondicion "
+	        		+ "WHERE s.jugador = ?";
 	        fetch = cnx.prepareStatement(sql);
 	        fetch.setInt(1, jugador.getId());
 	        ResultSet resultados = fetch.executeQuery();
 
 	        while (resultados.next()) {
 	        	confianza = resultados.getInt(1);
-	            personajeId = resultados.getInt(2);
-	            salud = resultados.getInt(3);
-	            condicion = resultados.getString(4);
+	        	salud = resultados.getInt(2);
+	        	condicion = resultados.getString(3);
+	        	id = resultados.getInt(4);
 
-	            if (personajeId==11) {
+	            if (id==11) {
 	            	enemigos.add(new Enemigo("Sailor Ceres", "Ceres", "¡Rocas afiladas de Ceres, dispersaos!", "¡Ondas gravitacionales de Ceres!", salud, condicion, confianza));
-				} else if (personajeId==12) {
+				} else if (id==12) {
 					enemigos.add(new Enemigo("Sailor Eris", "Eris", "Estacas cristalinas de Eris, ¡congelad!", "¡Aurora Resplandeciente de Eris!", salud, condicion, confianza));
-				} else if (personajeId==13) {
+				} else if (id==13) {
 					enemigos.add(new Enemigo("Sailor Haumea", "Humea", "¡Ciclón perforador de Humea, devastación!", "¡Proyección astral de Humea!", salud, condicion, confianza));
-				} else if (personajeId==14) {
+				} else if (id==14) {
 					enemigos.add(new Enemigo("Nyx", "Dark Moon", "Eclipse anular, ¡manifiéstate!", "¡Ondas sonoras de la Luna Oscura!", salud, condicion, confianza));
 				}
 

@@ -13,7 +13,6 @@ import dll.Historia;
 import dll.Jugador;
 import dll.Personaje;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.LinkedList;
 
 public class Main {
@@ -42,7 +41,7 @@ public class Main {
 		Enemigo humea = new Enemigo("Sailor Haumea", "Humea", "¡Ciclón perforador de Humea, devastación!", "¡Proyección astral de Humea!", 3, "Enemigo", 0);
 		Enemigo dmoon = new Enemigo("Nyx", "Dark Moon", "Eclipse anular, ¡manifiéstate!", "¡Ondas sonoras de la Luna Oscura!", 4, "Enemigo", 0);
 		
-		String []menu= {"Nueva Partida" , "Cargar Partida", "Cambiar Nombre", "Borrar Usuario", "Salir"};
+		String []menu= {"Nueva Partida" , "Cargar Partida", "Cambiar Nombre", "Borrar Usuario", "Modo Batalla", "Salir"};
 		String []confirmacion= {"Si", "No"};
 		
 		do {
@@ -51,7 +50,7 @@ public class Main {
 			
 			if (opcion==0) {
 				valid.arNuevoJugador(jugador);
-				valid.arAltaAfinidad(jugador);
+				valid.arAltaStatus(jugador);
 				
 			} else if (opcion==1) {
 				cargarJugador(jugador, valid);
@@ -73,6 +72,12 @@ public class Main {
 				} else {
 					JOptionPane.showMessageDialog(null, "El usuario no se borró.");
 				}
+				opcion = 10;
+				
+			} else if (opcion==4) {
+				mercury.transformarse(true); mars.transformarse(true); jupiter.transformarse(true); venus.transformarse(true);
+				modoBatalla(mercury, mars, jupiter, venus, eris);
+				mercury.transformarse(false); mars.transformarse(false); jupiter.transformarse(false); venus.transformarse(false);
 				opcion = 10;
 				
 			} else {
@@ -108,7 +113,7 @@ public class Main {
 		switch (jugador.getProgreso()) {
 			case 1: //Llegada al Parque Yoyogi
 				sm.Intro1(jugador, moon, mercury, mars, jupiter, venus);
-				ds.Decision1(jugador, moon, mercury, mars, jupiter, venus);
+				ds.Decision1(jugador, moon, mercury, mars, jupiter, venus, dmoon);
 				ds.tutorialDecision(jugador, moon, mercury, mars, jupiter, venus, player);
 				valid.arNombre(jugador);
 				jugador.setProgreso(2);
@@ -116,7 +121,7 @@ public class Main {
 			
 			case 2: //Mina se presenta
 				sm.Intro2(earth, jugador, moon, mercury, mars, jupiter, venus);		
-				sm.Escena1(jugador, moon, mercury, mars, jupiter, venus, earth, ds.Decision2(jugador, moon, mercury, mars, jupiter, venus), player);
+				sm.Escena1(jugador, moon, mercury, mars, jupiter, venus, earth, ds.Decision2(jugador, moon, mercury, mars, jupiter, venus, dmoon), player);
 				jugador.setProgreso(3);
 				valid.arModProgreso(jugador);
 	
@@ -156,8 +161,6 @@ public class Main {
 		default:
 			break;
 		}
-		
-
 
 	}
 	
@@ -191,7 +194,7 @@ public class Main {
 	}
 	
 	private static void cargarAfinidad(Jugador jugador, Validador valid, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus) {
-		LinkedList<Aliado> afinidades = valid.arCargarAfinidad(jugador);
+		LinkedList<Aliado> afinidades = valid.arCargarStatusAliado(jugador);
 		
 		mercury.setAfinidad(afinidades.get(0).getAfinidad());
 		mars.setAfinidad(afinidades.get(1).getAfinidad());
@@ -200,7 +203,7 @@ public class Main {
 	}
 	
 	private static void cargarEnemigos(Jugador jugador, Validador valid, Enemigo ceres, Enemigo eris, Enemigo humea, Enemigo dmoon) {
-		LinkedList<Enemigo> enemigos = valid.arCargarEnemigos(jugador);
+		LinkedList<Enemigo> enemigos = valid.arCargarStatusEnemigo(jugador);
 		
 		ceres.setConfianza(enemigos.get(0).getConfianza());
 		ceres.setSalud(enemigos.get(0).getSalud());
@@ -217,5 +220,95 @@ public class Main {
 		dmoon.setConfianza(enemigos.get(3).getConfianza());
 		dmoon.setSalud(enemigos.get(3).getSalud());
 		dmoon.setCondicion(enemigos.get(3).getCondicion());	
+	}
+	
+	private static void modoBatalla(Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus, Enemigo enemigo) {
+		Batalla bt = new Batalla(1);
+		int rondas = 4;
+		String imgEnemigo = "";
+		boolean ganador = false;
+		
+		if (enemigo.getPlaneta().equals("Ceres")) {
+			imgEnemigo = "ceres.png";
+		} else if (enemigo.getPlaneta().equals("Eris")) {
+			imgEnemigo = "eris.png";
+		} else if (enemigo.getPlaneta().equals("Humea")) {
+			imgEnemigo = "humea.png";
+		} else if (enemigo.getPlaneta().equals("Dark Moon")) {
+			imgEnemigo = "nyx.png";
+		}
+		
+		do {
+
+		if (bt.definirGanador(enemigo, enemigo.usarPoder((int) (Math.random() * 2)), bt.eligirAtaque(mercury, mars, jupiter, venus))) {
+			enemigo.setSalud(enemigo.getSalud()-1);
+			rondas = rondas - 1;
+			
+			if (enemigo.getSalud()==1) {
+				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": ¿¡Cómo te atreves!?", "Diálogo", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+			} else if (enemigo.getSalud()==0) {
+				ganador = true;
+				rondas = 0;
+			}
+			
+		} else {
+			if (rondas==4) {
+				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": ¿Eso es todo lo que puedes hacer?", "Diálogo", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+				rondas = rondas - 1;
+			} else if (rondas==3) {
+				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": ¡Eres patético!", "Diálogo", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+				rondas = rondas - 1;
+			} else if (rondas==2) {
+				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": Muestra tu verdadero potencial.", "Diálogo", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+				rondas = rondas - 1;
+			} else if (rondas==1) {
+				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": Me estoy aburriendo...", "Diálogo", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+				rondas = rondas - 1;
+			} else if (rondas==0) {
+				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": Basta. Ya me cansé.", "Perdió la batalla", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+				rondas = rondas - 1;
+			}
+
+		}
+		
+		} while (rondas>0);
+		
+		if (ganador) {
+			JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": ¿Cómo perdí contra ti...?", "Ganó la batalla", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+			
+			String []decision= {"Curar el enemigo" , "Derrotar el enemigo"};
+			String []respuestas= {"Sé que no querías hacer esto." , "Entiendo lo que hiciste y no te juzgaré por ello.", "Ya no hay nada que puedas hacer."};
+			
+			int opcion = JOptionPane.showOptionDialog(null, "Que quieres hacer?", "Decidir el destino del enemigo", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, decision, decision[0]);
+			
+			if (opcion==1) {
+				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": ¿¡Cómo puedes ser tan cruel!?", "Enemigo derrotado", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+				JOptionPane.showMessageDialog(null, enemigo.getNombre() + " fue derrotada y ya no aparecerá.");
+				enemigo.setCondicion("Derrotado");
+			} else {
+				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": Oh, ¿quieres curarme? ¿Crees que me convencerás?", "Curar Enemigo", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+				
+				opcion = JOptionPane.showOptionDialog(null, "Que vas a decir?", "Convencer el enemigo", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, respuestas, respuestas[0]);
+				
+				if (opcion==0) {
+					JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": ¡Sí, pero eso no cambia nada! Todavía no te creo.", "Enemigo curado", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+					JOptionPane.showMessageDialog(null, enemigo.getNombre() + " ya no será tu enemiga, aunque no la hayas convencido.");
+					enemigo.setCondicion("Curado");
+				} else if (opcion==1) {
+					JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": ¿Es verdad? Bueno... creo que puedo confiar en ti.", "Enemigo curado", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+					JOptionPane.showMessageDialog(null, "Conseguiste convertir a " + enemigo.getNombre() + " en una aliada!");
+					enemigo.setCondicion("Aliado");
+				} else {
+					JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": Eso es lo que piensas. ¡Nos veremos muy pronto!", "Enemigo derrotado", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+					JOptionPane.showMessageDialog(null, "No pudiste convencer a" + enemigo.getNombre() + ". Ella seguirá siendo tu enemiga.");
+				}
+				
+			}
+			
+		} else {
+			JOptionPane.showMessageDialog(null, "Perdiste la batalla contra " + enemigo.getNombre() + ". Ya no poderás curarla.");
+			
+		}
+
 	}
 }

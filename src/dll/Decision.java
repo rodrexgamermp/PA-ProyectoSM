@@ -1,7 +1,5 @@
 package dll;
 
-import java.sql.Connection;
-
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -31,7 +29,7 @@ public class Decision {
 	
 	Validador valid = new Validador();
 	
-	public boolean Decision1(Jugador jugador, Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus) {
+	public boolean Decision1(Jugador jugador, Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus, Enemigo enemigo) {
 		String[] respuesta = {"Todo bien, no te preocupes.", "¡Ten más cuidado!"};
 		
 		 int opcion = JOptionPane.showOptionDialog(
@@ -47,12 +45,12 @@ public class Decision {
 
 		        if (opcion == 0) {
 		        	jupiter.modAfinidad(true);
-		        	valid.arModAfinidad(jugador, jupiter);
+		        	valid.arModStatus(jugador, jupiter, enemigo);
 		        	JOptionPane.showMessageDialog(null, jupiter.getNombre() + ":\nAh, me alegro. Estaba distraída…", "Karma: " + jugador.getKarma() + " | Afinidad: ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Decision.class.getResource("makogd.png")));
 		        	return true;
 		        } else {
 		        	jupiter.modAfinidad(false);
-		        	valid.arModAfinidad(jugador, jupiter);
+		        	valid.arModStatus(jugador, jupiter, enemigo);
 		        	JOptionPane.showMessageDialog(null, jupiter.getNombre() + ":\nTampoco es para tanto. Estaba distraída…", "Karma: " + jugador.getKarma() + " | Afinidad: ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Decision.class.getResource("makobd.png")));
 		        	return false;
 		        }
@@ -68,7 +66,7 @@ public class Decision {
 		JOptionPane.showMessageDialog(null, venus.getNombre() + ":\nMako, siempre dices eso...\nAh, por cierto, ¿cómo te llamas?", "Karma: " + jugador.getKarma() + " | Afinidad: ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Decision.class.getResource("Mina.png")));
 	}
 	
-	public boolean Decision2(Jugador jugador, Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus) {	
+	public boolean Decision2(Jugador jugador, Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus, Enemigo enemigo) {	
 		String[] respuesta = {"¡Me encantaría!", "Sería genial, pero…"};
 		
 		 int opcion = JOptionPane.showOptionDialog(
@@ -84,12 +82,12 @@ public class Decision {
 
 		        if (opcion == 0) {
 		        	venus.modAfinidad(true);
-		        	valid.arModAfinidad(jugador, venus);
+		        	valid.arModStatus(jugador, venus, enemigo);
 		        	JOptionPane.showMessageDialog(null, venus.getNombre() + ":\n¡Entonces vámonos!\nNuestros amigos ya nos están esperando.", "Karma: " + jugador.getKarma() + " | Afinidad: ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Decision.class.getResource("minagd.png")));
 		            return true;
 		        } else {
 		        	venus.modAfinidad(false);
-		        	valid.arModAfinidad(jugador, venus);
+		        	valid.arModStatus(jugador, venus, enemigo);
 		        	JOptionPane.showMessageDialog(null, venus.getNombre() + ":\nOh, ya debes tener otros planes.\nTodo bien entonces. ¡Nos vemos por ahí!", "Karma: " + jugador.getKarma() + " | Afinidad: ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Decision.class.getResource("minabd.png")));
 		            return false;
 		        }

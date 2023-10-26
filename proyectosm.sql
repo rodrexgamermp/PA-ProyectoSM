@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 26/10/2023 às 16:54
+-- Tempo de geração: 26/10/2023 às 22:13
 -- Versão do servidor: 10.4.28-MariaDB
 -- Versão do PHP: 8.1.17
 
@@ -20,41 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `proyectosm`
 --
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `afinidad`
---
-
-CREATE TABLE `afinidad` (
-  `idAfinidad` int(11) NOT NULL,
-  `cantidad` int(11) NOT NULL DEFAULT 0,
-  `personaje` int(11) NOT NULL,
-  `jugador` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Despejando dados para a tabela `afinidad`
---
-
-INSERT INTO `afinidad` (`idAfinidad`, `cantidad`, `personaje`, `jugador`) VALUES
-(1, 1, 3, 1),
-(2, 3, 4, 1),
-(3, 4, 5, 1),
-(4, 2, 6, 1),
-(5, 3, 3, 2),
-(6, 3, 4, 2),
-(7, 4, 5, 2),
-(8, 4, 6, 2),
-(9, 0, 11, 1),
-(10, 0, 12, 1),
-(11, 0, 13, 1),
-(12, 0, 14, 1),
-(13, 0, 11, 2),
-(14, 0, 12, 2),
-(15, 0, 13, 2),
-(16, 0, 14, 2);
 
 -- --------------------------------------------------------
 
@@ -115,8 +80,7 @@ CREATE TABLE `jugador` (
 --
 
 INSERT INTO `jugador` (`idJugador`, `nomJugador`, `karma`, `genero`, `progreso`) VALUES
-(1, 'Tester', 1, 2, 2),
-(2, 'Shingo', 1, 1, 5);
+(1, 'Tester', 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -128,30 +92,28 @@ CREATE TABLE `personaje` (
   `idPersonaje` int(11) NOT NULL,
   `nomPers` varchar(20) NOT NULL,
   `planeta` varchar(20) NOT NULL,
-  `bio` text NOT NULL,
-  `salud` int(11) DEFAULT NULL,
-  `condicion` int(11) DEFAULT NULL
+  `bio` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `personaje`
 --
 
-INSERT INTO `personaje` (`idPersonaje`, `nomPers`, `planeta`, `bio`, `salud`, `condicion`) VALUES
-(1, 'Naru', 'Earth', 'Este es un personaje ficticio creado para este juego. Despierta como Sailor Earth, el guerrero del planeta Tierra (🜨). Tiene el poder de controlar flores y plantas, y también puede provocar ráfagas de viento y temblores. Tiene una fuerte relación con Nyx, algo que viene de un pasado lejano.', NULL, NULL),
-(2, 'Usagi', 'Moon', 'Usagi Tsukino es una persona amable y gentil, aunque un poco torpe, pero que tiene un fuerte sentido de la justicia y hace todo lo posible para proteger sus ideales y a las personas que ama.\r\n\r\nEs la guerrera de la Luna (☽), Sailor Moon, y reencarnación de la princesa Serenity. Sus poderes pueden expulsar el mal y curar a las personas.', NULL, 1),
-(3, 'Ami', 'Mercury', 'Ami Mizuno es una chica tímida, introvertida y tranquila a la que le cuesta hacer amigos y es muy inteligente; no obstante, ella prefiere estar sola con sus libros.\r\n\r\nEs la guerrera de Mercurio (☿), Sailor Mercury. Sus poderes están relacionados con el elemento agua y tiene la capacidad de analizar enemigos.', NULL, 1),
-(4, 'Rei', 'Mars', 'Rei Hino es tenaz, un poco mandona pero bien intencionada, quien aspira a ser una \"idol\", asi como tener novio.\r\n\r\nEs la guerrera de Marte (♂), Sailor Mars y sus poderes están relacionados con el elemento fuego.\r\n\r\nRei tiene varios poderes fuera de su condición de Sailor, que ella utiliza en sus deberes como sacerdotisa, cómo leer las llamas y usar el Ofuda como un arma.', NULL, 1),
-(5, 'Mako', 'Jupiter', 'Makoto Kino consta de ser agresiva, impulsiva y varonil, pero bastante amigable. Ella se caracteriza por ser la extraña enamoradiza, que siempre anda recordando a un chico que le gustaba.\r\n\r\nEs la guerrera de Júpiter (♃), Sailor Jupiter. Sus poderes están relacionados con la electricidad y tiene la capacidad de paralizar a los enemigos.', NULL, 1),
-(6, 'Mina', 'Venus', 'Minako Aino es muy dedicada a sus amigas y a sus deberes, aunque sea una alumna de bajo rendimiento académico. Ella es muy atlética, especialmente cuando se trata de voleibol.\r\n\r\nComo Sailor Venus (♀), Minako muestra una faceta bastante seria al contrario de la imagen irresponsable y vaga que muestra en su faceta civil.\r\n\r\nSus poderes están relacionados con el control de la luz y tiene una corriente que sirve para restringir el mal.', NULL, 1),
-(7, 'Haruka', 'Uranus', 'Haruka Tenou es una corredora rápida, así como piloto de vehículos de carreras. A simple vista, es un chico. Compite en un fórmula 1, en motociclismo y todos la toman por un chico.\r\n\r\nSu planeta protector es Urano (♅). Como Sailor Uranus, sus poderes están asociados con la tierra y el viento. Tiene una espada como talismán, tan afilada que puede cortar incluso lo incorpóreo.', NULL, 1),
-(8, 'Michiru', 'Neptune', 'Michiru Kaiou es madura, serena y tranquila, y es difícil decir exactamente lo que esta pensando. Es también una violinista con talento.\r\n\r\nSu planeta protector es Neptuno (♆). Como Sailor Neptune, tiene el poder de conjurar agua y hielo. También tiene un espejo como talismán, que le permite reflejar la verdadera naturaleza de los seres.', NULL, 1),
-(9, 'Hotaru', 'Saturn', 'Hotaru Tomoe es una niña lógica, inteligente y de buena educación. Su popularidad entre sus compañeros de clase es mala ya que todos le tienen verdadero terror debido a que sufre de un trastorno de personalidad que la hace volverse de una joven calmada y amable a una joven sumamente agresiva y violenta, así como también posee poderes sobrenaturales.\r\n\r\nSu planeta protector es Saturno (♄) y se la considera la Sailor de la Destrucción. Tiene el poder de distorsionar la oscuridad y provocar silencio. Lleva una hoz como talismán que le permite juzgar y destruir todo lo que la rodea.', NULL, 1),
-(10, 'Setsuna', 'Pluto', 'Setsuna Meiou es una mujer elegante, analítica, educada, seria y discreta. Siempre está investigando lo necesario para derrotar al mal, actúa con propiedad y su mayor sueño es convertirse en una gran diseñadora de modas. \r\n\r\nSu planeta protector es Plutón (♇) y es la guardiana de la Puerta del Tiempo. Como Sailor Pluto, tiene el poder de manipular el tiempo y lleva consigo el Garnet Orb, un talismán que amplifica la energía y el poder de sus aliados.', NULL, 1),
-(11, 'Sailor Ceres', 'Ceres', 'Sailor del planeta enano Ceres, tiene la capacidad de controlar la gravedad y controlar la formación de tierra y rocas. Nyx la atrajo con la promesa de algo divertido que hacer. Ceres no se toma las cosas en serio y simplemente acepta luchar contra las Sailor Scouts como una forma de divertirse y acabar con el aburrimiento.', 2, 2),
-(12, 'Sailor Eris', 'Eris', 'Sailor del planeta enano Eris. Fue engañada y maldecida por Nyx, quien la corrompió con oscuridad, haciéndola vengativa. Ahora Sailor Eris busca vengarse de las otras Sailor Scouts por nunca haber sido reconocidas como guerrera.\r\n\r\nTiene el poder de congelación. Puede crear estalactitas de hielo y evocar ventiscas, además de construir paredes de hielo tan resistentes como diamantes.', 2, 2),
-(13, 'Sailor Haumea', 'Haumea', 'Es la Sailor del planeta enano Humea y la mano derecha de Nyx. Ella la reclutó para ser parte de su grupo de guardianes. Engañada por Nyx, Haumea cree que las demás Sailors la ven débil y, por tanto, quiere demostrar su valía.\r\n\r\nSu poder es fantasmal. Puede controlar la dimensión, moviéndose por el aire sin ser vista. De esta forma ataca sin que nadie se dé cuenta de su presencia.', 3, 2),
-(14, 'Nyx', 'Dark Moon', 'Nyx es la primeira reina de la Luna, también conocida como Dark Moon Queen, cuando este todavía era un planeta.\r\n\r\nHace muchos años, Nyx intentó apoderarse del planeta Tierra, pero huyó al no poder derrotar a la princesa de la Tierra. Luego su planeta fue tomado y transformado en lo que se convirtió en la luna de la Tierra.\r\n\r\nEncerrada en la oscuridad, Nyx esperó el fenómeno del eclipse anular para poder regresar y tomar su trono.', 4, 2);
+INSERT INTO `personaje` (`idPersonaje`, `nomPers`, `planeta`, `bio`) VALUES
+(1, 'Naru', 'Earth', 'Este es un personaje ficticio creado para este juego. Despierta como Sailor Earth, el guerrero del planeta Tierra (🜨). Tiene el poder de controlar flores y plantas, y también puede provocar ráfagas de viento y temblores. Tiene una fuerte relación con Nyx, algo que viene de un pasado lejano.'),
+(2, 'Usagi', 'Moon', 'Usagi Tsukino es una persona amable y gentil, aunque un poco torpe, pero que tiene un fuerte sentido de la justicia y hace todo lo posible para proteger sus ideales y a las personas que ama.\r\n\r\nEs la guerrera de la Luna (☽), Sailor Moon, y reencarnación de la princesa Serenity. Sus poderes pueden expulsar el mal y curar a las personas.'),
+(3, 'Ami', 'Mercury', 'Ami Mizuno es una chica tímida, introvertida y tranquila a la que le cuesta hacer amigos y es muy inteligente; no obstante, ella prefiere estar sola con sus libros.\r\n\r\nEs la guerrera de Mercurio (☿), Sailor Mercury. Sus poderes están relacionados con el elemento agua y tiene la capacidad de analizar enemigos.'),
+(4, 'Rei', 'Mars', 'Rei Hino es tenaz, un poco mandona pero bien intencionada, quien aspira a ser una \"idol\", asi como tener novio.\r\n\r\nEs la guerrera de Marte (♂), Sailor Mars y sus poderes están relacionados con el elemento fuego.\r\n\r\nRei tiene varios poderes fuera de su condición de Sailor, que ella utiliza en sus deberes como sacerdotisa, cómo leer las llamas y usar el Ofuda como un arma.'),
+(5, 'Mako', 'Jupiter', 'Makoto Kino consta de ser agresiva, impulsiva y varonil, pero bastante amigable. Ella se caracteriza por ser la extraña enamoradiza, que siempre anda recordando a un chico que le gustaba.\r\n\r\nEs la guerrera de Júpiter (♃), Sailor Jupiter. Sus poderes están relacionados con la electricidad y tiene la capacidad de paralizar a los enemigos.'),
+(6, 'Mina', 'Venus', 'Minako Aino es muy dedicada a sus amigas y a sus deberes, aunque sea una alumna de bajo rendimiento académico. Ella es muy atlética, especialmente cuando se trata de voleibol.\r\n\r\nComo Sailor Venus (♀), Minako muestra una faceta bastante seria al contrario de la imagen irresponsable y vaga que muestra en su faceta civil.\r\n\r\nSus poderes están relacionados con el control de la luz y tiene una corriente que sirve para restringir el mal.'),
+(7, 'Haruka', 'Uranus', 'Haruka Tenou es una corredora rápida, así como piloto de vehículos de carreras. A simple vista, es un chico. Compite en un fórmula 1, en motociclismo y todos la toman por un chico.\r\n\r\nSu planeta protector es Urano (♅). Como Sailor Uranus, sus poderes están asociados con la tierra y el viento. Tiene una espada como talismán, tan afilada que puede cortar incluso lo incorpóreo.'),
+(8, 'Michiru', 'Neptune', 'Michiru Kaiou es madura, serena y tranquila, y es difícil decir exactamente lo que esta pensando. Es también una violinista con talento.\r\n\r\nSu planeta protector es Neptuno (♆). Como Sailor Neptune, tiene el poder de conjurar agua y hielo. También tiene un espejo como talismán, que le permite reflejar la verdadera naturaleza de los seres.'),
+(9, 'Hotaru', 'Saturn', 'Hotaru Tomoe es una niña lógica, inteligente y de buena educación. Su popularidad entre sus compañeros de clase es mala ya que todos le tienen verdadero terror debido a que sufre de un trastorno de personalidad que la hace volverse de una joven calmada y amable a una joven sumamente agresiva y violenta, así como también posee poderes sobrenaturales.\r\n\r\nSu planeta protector es Saturno (♄) y se la considera la Sailor de la Destrucción. Tiene el poder de distorsionar la oscuridad y provocar silencio. Lleva una hoz como talismán que le permite juzgar y destruir todo lo que la rodea.'),
+(10, 'Setsuna', 'Pluto', 'Setsuna Meiou es una mujer elegante, analítica, educada, seria y discreta. Siempre está investigando lo necesario para derrotar al mal, actúa con propiedad y su mayor sueño es convertirse en una gran diseñadora de modas. \r\n\r\nSu planeta protector es Plutón (♇) y es la guardiana de la Puerta del Tiempo. Como Sailor Pluto, tiene el poder de manipular el tiempo y lleva consigo el Garnet Orb, un talismán que amplifica la energía y el poder de sus aliados.'),
+(11, 'Sailor Ceres', 'Ceres', 'Sailor del planeta enano Ceres, tiene la capacidad de controlar la gravedad y controlar la formación de tierra y rocas. Nyx la atrajo con la promesa de algo divertido que hacer. Ceres no se toma las cosas en serio y simplemente acepta luchar contra las Sailor Scouts como una forma de divertirse y acabar con el aburrimiento.'),
+(12, 'Sailor Eris', 'Eris', 'Sailor del planeta enano Eris. Fue engañada y maldecida por Nyx, quien la corrompió con oscuridad, haciéndola vengativa. Ahora Sailor Eris busca vengarse de las otras Sailor Scouts por nunca haber sido reconocidas como guerrera.\r\n\r\nTiene el poder de congelación. Puede crear estalactitas de hielo y evocar ventiscas, además de construir paredes de hielo tan resistentes como diamantes.'),
+(13, 'Sailor Haumea', 'Haumea', 'Es la Sailor del planeta enano Humea y la mano derecha de Nyx. Ella la reclutó para ser parte de su grupo de guardianes. Engañada por Nyx, Haumea cree que las demás Sailors la ven débil y, por tanto, quiere demostrar su valía.\r\n\r\nSu poder es fantasmal. Puede controlar la dimensión, moviéndose por el aire sin ser vista. De esta forma ataca sin que nadie se dé cuenta de su presencia.'),
+(14, 'Nyx', 'Dark Moon', 'Nyx es la primeira reina de la Luna, también conocida como Dark Moon Queen, cuando este todavía era un planeta.\r\n\r\nHace muchos años, Nyx intentó apoderarse del planeta Tierra, pero huyó al no poder derrotar a la princesa de la Tierra. Luego su planeta fue tomado y transformado en lo que se convirtió en la luna de la Tierra.\r\n\r\nEncerrada en la oscuridad, Nyx esperó el fenómeno del eclipse anular para poder regresar y tomar su trono.');
 
 -- --------------------------------------------------------
 
@@ -177,17 +139,38 @@ INSERT INTO `seccion` (`idSeccion`, `tituloEscena`, `textoEscena`) VALUES
 (5, 'Batalla Tutorial', 'Luna: Elige una Sailor Guerrera para enfrentar a Nyx contigo. Cada una tiene sus propios ataques. Elige la mejor opción para enfrentarte a cada enemigo.'),
 (6, 'Fin acto 0', 'En ese momento, Sailor Moon se desmaya frente a todos, causando preocupación. Tuxedo Mask la toma en sus brazos y se da cuenta de que todavía está viva, pero su cuerpo está frío como la noche.');
 
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `status`
+--
+
+CREATE TABLE `status` (
+  `idStatus` int(11) NOT NULL,
+  `afinidad` int(11) NOT NULL,
+  `salud` int(11) NOT NULL,
+  `condicion` int(11) NOT NULL,
+  `personaje` int(11) NOT NULL,
+  `jugador` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `status`
+--
+
+INSERT INTO `status` (`idStatus`, `afinidad`, `salud`, `condicion`, `personaje`, `jugador`) VALUES
+(1, 3, 0, 1, 3, 1),
+(2, 3, 0, 1, 4, 1),
+(3, 3, 0, 1, 5, 1),
+(4, 3, 0, 1, 6, 1),
+(5, 0, 2, 2, 11, 1),
+(6, 0, 2, 2, 12, 1),
+(7, 0, 3, 2, 13, 1),
+(8, 0, 4, 2, 14, 1);
+
 --
 -- Índices para tabelas despejadas
 --
-
---
--- Índices de tabela `afinidad`
---
-ALTER TABLE `afinidad`
-  ADD PRIMARY KEY (`idAfinidad`),
-  ADD KEY `personaje_afinidad` (`personaje`),
-  ADD KEY `jugador_afinidad` (`jugador`);
 
 --
 -- Índices de tabela `condicion`
@@ -213,8 +196,7 @@ ALTER TABLE `jugador`
 -- Índices de tabela `personaje`
 --
 ALTER TABLE `personaje`
-  ADD PRIMARY KEY (`idPersonaje`),
-  ADD KEY `condicion` (`condicion`);
+  ADD PRIMARY KEY (`idPersonaje`);
 
 --
 -- Índices de tabela `seccion`
@@ -223,14 +205,17 @@ ALTER TABLE `seccion`
   ADD PRIMARY KEY (`idSeccion`);
 
 --
--- AUTO_INCREMENT para tabelas despejadas
+-- Índices de tabela `status`
 --
+ALTER TABLE `status`
+  ADD PRIMARY KEY (`idStatus`),
+  ADD KEY `statusJugador` (`jugador`),
+  ADD KEY `statusPersonaje` (`personaje`),
+  ADD KEY `tipoCondicion` (`condicion`);
 
 --
--- AUTO_INCREMENT de tabela `afinidad`
+-- AUTO_INCREMENT para tabelas despejadas
 --
-ALTER TABLE `afinidad`
-  MODIFY `idAfinidad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de tabela `condicion`
@@ -263,15 +248,14 @@ ALTER TABLE `seccion`
   MODIFY `idSeccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- Restrições para tabelas despejadas
+-- AUTO_INCREMENT de tabela `status`
 --
+ALTER TABLE `status`
+  MODIFY `idStatus` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- Restrições para tabelas `afinidad`
+-- Restrições para tabelas despejadas
 --
-ALTER TABLE `afinidad`
-  ADD CONSTRAINT `jugador_afinidad` FOREIGN KEY (`jugador`) REFERENCES `jugador` (`idJugador`),
-  ADD CONSTRAINT `personaje_afinidad` FOREIGN KEY (`personaje`) REFERENCES `personaje` (`idPersonaje`);
 
 --
 -- Restrições para tabelas `jugador`
@@ -281,10 +265,12 @@ ALTER TABLE `jugador`
   ADD CONSTRAINT `progreso_seccion` FOREIGN KEY (`progreso`) REFERENCES `seccion` (`idSeccion`);
 
 --
--- Restrições para tabelas `personaje`
+-- Restrições para tabelas `status`
 --
-ALTER TABLE `personaje`
-  ADD CONSTRAINT `condicion` FOREIGN KEY (`condicion`) REFERENCES `condicion` (`idCondicion`);
+ALTER TABLE `status`
+  ADD CONSTRAINT `statusJugador` FOREIGN KEY (`jugador`) REFERENCES `jugador` (`idJugador`),
+  ADD CONSTRAINT `statusPersonaje` FOREIGN KEY (`personaje`) REFERENCES `personaje` (`idPersonaje`),
+  ADD CONSTRAINT `tipoCondicion` FOREIGN KEY (`condicion`) REFERENCES `condicion` (`idCondicion`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
