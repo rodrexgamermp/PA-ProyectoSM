@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 
 import dll.Aliado;
 import dll.Conexion;
+import dll.Enemigo;
 import dll.Jugador;
 
 public class Validador {
@@ -19,6 +20,7 @@ public class Validador {
 	
 	public boolean arNuevoJugador(Jugador jugador) {
 		int idGenerado = 0, generoElegido = 0;
+		String nomFalso = "Jugador " + (int)(Math.random()*999999);
 		
 		String[] generos = {"Chico", "Chica", "Lo que sea"};
 		
@@ -50,9 +52,10 @@ public class Validador {
 			}
 		}
 		try {
-            String sql = "INSERT INTO `jugador`(`genero`) VALUES (?)";
+            String sql = "INSERT INTO `jugador`(`nomJugador`, `genero`) VALUES (?, ?)";
             fetch = cnx.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-    		fetch.setInt(1, generoElegido);
+            fetch.setString(1, nomFalso);
+    		fetch.setInt(2, generoElegido);
     		fetch.executeUpdate();
     		decode = fetch.getGeneratedKeys();
 	    		if (decode.next()) {
@@ -142,15 +145,24 @@ public class Validador {
 	public void arAltaAfinidad(Jugador jugador) {
 		
 		try {
-            String sql = "INSERT INTO `afinidad`(`personaje`, `jugador`) VALUES (?,?)";
+            String sql = "INSERT INTO `afinidad`(`cantidad`, `personaje`, `jugador`) VALUES (?,?,?)";
             fetch = cnx.prepareStatement(sql);
             
-            int[] personajes = {3, 4, 5, 6};
+            int[] personajes = {3, 4, 5, 6, 11, 12, 13, 14};
             
             for (int personaje : personajes) {
-                fetch.setInt(1, personaje);
-                fetch.setInt(2, jugador.getId());
-                fetch.executeUpdate();
+            	if (personaje == 3 || personaje == 4 || personaje == 5 || personaje == 6) {
+            		fetch.setInt(1, 3);
+            		fetch.setInt(2, personaje);
+                    fetch.setInt(3, jugador.getId());
+                    fetch.executeUpdate();
+				} else {
+					fetch.setInt(1, 0);
+            		fetch.setInt(2, personaje);
+                    fetch.setInt(3, jugador.getId());
+                    fetch.executeUpdate();
+				}
+                
             }
     		
 		} catch (Exception e) {
@@ -171,6 +183,14 @@ public class Validador {
 	            personajeId = 5;
 	        } else if (personaje.getPlaneta().equals("Venus")) {
 	            personajeId = 6;
+	        } else if (personaje.getPlaneta().equals("Ceres")) {
+	            personajeId = 11;
+	        } else if (personaje.getPlaneta().equals("Eris")) {
+	            personajeId = 12;
+	        } else if (personaje.getPlaneta().equals("Humea")) {
+	            personajeId = 13;
+	        } else if (personaje.getPlaneta().equals("Dark Moon")) {
+	            personajeId = 14;
 	        }
 			
 	        String sql = "UPDATE `afinidad` SET `cantidad` = ? " +
@@ -262,21 +282,80 @@ public class Validador {
 
 	    return afinidades;
 	}
+
+	public LinkedList<Enemigo> arCargarEnemigos(Jugador jugador) {
+	    LinkedList<Enemigo> enemigos = new LinkedList<Enemigo>();
+	    int confianza = 0, personajeId = 0, salud = 0;
+	    String condicion = "";
+	    
+	    try {
+	        String sql = "SELECT a.cantidad, a.personaje, p.salud, c.nomCondicion "
+	        		+ "FROM afinidad a "
+	        		+ "INNER JOIN personaje p ON a.personaje = p.idPersonaje "
+	        		+ "INNER JOIN condicion c ON p.condicion = c.idCondicion "
+	        		+ "WHERE `jugador` = ?";
+	        fetch = cnx.prepareStatement(sql);
+	        fetch.setInt(1, jugador.getId());
+	        ResultSet resultados = fetch.executeQuery();
+
+	        while (resultados.next()) {
+	        	confianza = resultados.getInt(1);
+	            personajeId = resultados.getInt(2);
+	            salud = resultados.getInt(3);
+	            condicion = resultados.getString(4);
+
+	            if (personajeId==11) {
+	            	enemigos.add(new Enemigo("Sailor Ceres", "Ceres", "¡Rocas afiladas de Ceres, dispersaos!", "¡Ondas gravitacionales de Ceres!", salud, condicion, confianza));
+				} else if (personajeId==12) {
+					enemigos.add(new Enemigo("Sailor Eris", "Eris", "Estacas cristalinas de Eris, ¡congelad!", "¡Aurora Resplandeciente de Eris!", salud, condicion, confianza));
+				} else if (personajeId==13) {
+					enemigos.add(new Enemigo("Sailor Haumea", "Humea", "¡Ciclón perforador de Humea, devastación!", "¡Proyección astral de Humea!", salud, condicion, confianza));
+				} else if (personajeId==14) {
+					enemigos.add(new Enemigo("Nyx", "Dark Moon", "Eclipse anular, ¡manifiéstate!", "¡Ondas sonoras de la Luna Oscura!", salud, condicion, confianza));
+				}
+
+	        }
+	    } catch (Exception e) {
+	    		JOptionPane.showMessageDialog(null, "query failed: " + e);
+	    }
+
+	    return enemigos;
+	}
 	
-	public void arModProgreso(Jugador jugador) {
+	public boolean arModProgreso(Jugador jugador) {
 		try {	
 	        String sql = "UPDATE `jugador` SET `progreso`=? WHERE idJugador=?";
 	        fetch = cnx.prepareStatement(sql);
 	        fetch.setInt(1, jugador.getProgreso());
 	        fetch.setInt(2, jugador.getId());
 	        fetch.executeUpdate();
+	        return true;
 	    } catch (Exception e) {
 	    	JOptionPane.showMessageDialog(null, "query failed: " + e);
+	    	return false;
 	    }	
 	}
 	
-	public void arBajaJugador(LinkedList<Jugador> jugadores) {
-			
+	public boolean arBajaJugador(Jugador jugador) {
+		try {	
+	        String sql = "DELETE FROM afinidad WHERE jugador = ?";
+	        fetch = cnx.prepareStatement(sql);
+	        fetch.setInt(1, jugador.getId());
+	        fetch.executeUpdate();
+	    } catch (Exception e) {
+	    	JOptionPane.showMessageDialog(null, "query failed: " + e);
+	    }	
+		
+		try {	
+	        String sql = "DELETE FROM `jugador` WHERE nomJugador=?";
+	        fetch = cnx.prepareStatement(sql);
+	        fetch.setString(1, jugador.getNombre());
+	        fetch.executeUpdate();
+	        return true;
+	    } catch (Exception e) {
+	    	JOptionPane.showMessageDialog(null, "query failed: " + e);
+	    	return false;
+	    }	
 		
 	}
 	

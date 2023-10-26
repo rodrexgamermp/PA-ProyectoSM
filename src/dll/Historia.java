@@ -3,8 +3,6 @@ package dll;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import ui.Main;
-
 public class Historia {
 	
 	private String titulo;
@@ -308,10 +306,6 @@ public class Historia {
 	}
 	
 	
-	
-	
-	
-	
 	public void fin(Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus) {
 		moon.transformarse(false); mercury.transformarse(false); mars.transformarse(false); jupiter.transformarse(false); venus.transformarse(false);
 		int max = -100;
@@ -348,17 +342,7 @@ public class Historia {
 		JOptionPane.showMessageDialog(null, "¡Gracias por jugar la demostración del juego!\nFormaste un vínculo especial con " + nomMax + ".\nEspero que estés listo para aventurarte con ella\nen esta nueva aventura de Sailor Moon.", "Fin de la Demo",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource(img)));
 		JOptionPane.showMessageDialog(null, "Sailor Moon: Battle for Earth\n¡Próximamente!", "Fin de la Demo",  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("")));
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 
 }
-
-//JOptionPane.showMessageDialog(null, "", "Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("")));
-//JOptionPane.showMessageDialog(null, "", "Karma: " + jugador.getKarma() + " | Afinidad:  ☿" + mercury.getAfinidad() + " ♂" + mars.getAfinidad() + " ♃" + jupiter.getAfinidad() + " ♀" + venus.getAfinidad(),  JOptionPane.PLAIN_MESSAGE, new ImageIcon(Historia.class.getResource("")));

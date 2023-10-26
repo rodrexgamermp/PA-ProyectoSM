@@ -183,10 +183,21 @@ public class Batalla {
 			return 10;
 		} else if (enemigo.equals("¡Ondas sonoras de la Luna Oscura!")) {
 			return 2;
+		} else if (enemigo.equals("¡Rocas afiladas de Ceres, dispersaos!")) {
+			return 6;
+		} else if (enemigo.equals("¡Ondas gravitacionales de Ceres!")) {
+			return 6;
+		} else if (enemigo.equals("Estacas cristalinas de Eris, ¡congelad!")) {
+			return 10;
+		} else if (enemigo.equals("¡Aurora Resplandeciente de Eris!")) {
+			return 1;
+		} else if (enemigo.equals("¡Ciclón perforador de Humea, devastación!")) {
+			return 7;
+		} else if (enemigo.equals("¡Proyección astral de Humea!")) {
+			return 2;
 		} else {
 			return 0;
 		}
-		//faltan los otros
 	}
 	
 	/*public boolean blackMoon(Jugador jugador, Aliado moon, Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus, Enemigo bmoon, String atkaliado, String atkenemigo) {
