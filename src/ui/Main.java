@@ -225,17 +225,22 @@ public class Main {
 	private static void modoBatalla(Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus, Enemigo enemigo) {
 		Batalla bt = new Batalla(1);
 		int rondas = 4;
+		enemigo.setSalud(2);
 		String imgEnemigo = "";
 		boolean ganador = false;
 		
 		if (enemigo.getPlaneta().equals("Ceres")) {
 			imgEnemigo = "ceres.png";
+			JOptionPane.showMessageDialog(null, "Batalla contra " + enemigo.getNombre() + ".\n" + enemigo.getPlaneta() + " tiene poderes de tipo Tierra.");
 		} else if (enemigo.getPlaneta().equals("Eris")) {
 			imgEnemigo = "eris.png";
+			JOptionPane.showMessageDialog(null, "Batalla contra " + enemigo.getNombre() + ".\n" + enemigo.getPlaneta() + " tiene poderes de tipo Hielo y Luz.");
 		} else if (enemigo.getPlaneta().equals("Humea")) {
 			imgEnemigo = "humea.png";
+			JOptionPane.showMessageDialog(null, "Batalla contra " + enemigo.getNombre() + ".\n" + enemigo.getPlaneta() + " tiene poderes de tipo Aire y Oscuridad.");
 		} else if (enemigo.getPlaneta().equals("Dark Moon")) {
 			imgEnemigo = "nyx.png";
+			JOptionPane.showMessageDialog(null, "Batalla contra " + enemigo.getPlaneta() + ".\n" + enemigo.getNombre() + " tiene poderes de tipo Fuego y Oscuridad.");
 		}
 		
 		do {
@@ -259,16 +264,12 @@ public class Main {
 				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": ¡Eres patético!", "Diálogo", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
 				rondas = rondas - 1;
 			} else if (rondas==2) {
-				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": Muestra tu verdadero potencial.", "Diálogo", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
-				rondas = rondas - 1;
-			} else if (rondas==1) {
 				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": Me estoy aburriendo...", "Diálogo", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
 				rondas = rondas - 1;
-			} else if (rondas==0) {
-				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": Basta. Ya me cansé.", "Perdió la batalla", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
+			} else if (rondas==1) {
+				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": Basta. Ya me cansé.", "Diálogo", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
 				rondas = rondas - 1;
 			}
-
 		}
 		
 		} while (rondas>0);
