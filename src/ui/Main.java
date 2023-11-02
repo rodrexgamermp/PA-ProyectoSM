@@ -20,7 +20,7 @@ public class Main {
 	public static void main(String[] args) {
 		String player = "", senshi = "", fighter = "";
 		int opcion = 10;
-		
+
 		Connection cnx = new Conexion().conectar();
 		Validador valid = new Validador();
 
@@ -75,8 +75,19 @@ public class Main {
 				opcion = 10;
 				
 			} else if (opcion==4) {
+				Enemigo enemigo = null;
+				int random = (int)(Math.random()*4);
+				if (random==0) {
+					enemigo = ceres;
+				} else if (random==1) {
+					enemigo = eris;
+				} else if (random==1) {
+					enemigo = humea;
+				} else {
+					enemigo = dmoon;
+				}
 				mercury.transformarse(true); mars.transformarse(true); jupiter.transformarse(true); venus.transformarse(true);
-				modoBatalla(mercury, mars, jupiter, venus, eris);
+				modoBatalla(mercury, mars, jupiter, venus, enemigo);
 				mercury.transformarse(false); mars.transformarse(false); jupiter.transformarse(false); venus.transformarse(false);
 				opcion = 10;
 				
@@ -226,7 +237,7 @@ public class Main {
 		Batalla bt = new Batalla(1);
 		int rondas = 4;
 		enemigo.setSalud(2);
-		String imgEnemigo = "";
+		String imgEnemigo = "", atk ="";
 		boolean ganador = false;
 		
 		if (enemigo.getPlaneta().equals("Ceres")) {
@@ -244,10 +255,16 @@ public class Main {
 		}
 		
 		do {
+			
+			atk = bt.eligirAtaque(mercury, mars, jupiter, venus);
 
-		if (bt.definirGanador(enemigo, enemigo.usarPoder((int) (Math.random() * 2)), bt.eligirAtaque(mercury, mars, jupiter, venus))) {
+			while (atk.equals("none")) {
+			atk = bt.eligirAtaque(mercury, mars, jupiter, venus);
+			}
+
+		if (bt.definirGanador(enemigo, enemigo.usarPoder((int) (Math.random() * 2)), atk)) {
 			enemigo.setSalud(enemigo.getSalud()-1);
-			rondas = rondas - 1;
+			rondas = rondas + 1;
 			
 			if (enemigo.getSalud()==1) {
 				JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": ¿¡Cómo te atreves!?", "Diálogo", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
@@ -301,7 +318,7 @@ public class Main {
 					enemigo.setCondicion("Aliado");
 				} else {
 					JOptionPane.showMessageDialog(null, enemigo.getNombre() + ": Eso es lo que piensas. ¡Nos veremos muy pronto!", "Enemigo derrotado", JOptionPane.PLAIN_MESSAGE, new ImageIcon(Main.class.getResource(imgEnemigo)));
-					JOptionPane.showMessageDialog(null, "No pudiste convencer a" + enemigo.getNombre() + ". Ella seguirá siendo tu enemiga.");
+					JOptionPane.showMessageDialog(null, "No pudiste convencer a " + enemigo.getNombre() + ". Ella seguirá siendo tu enemiga.");
 				}
 				
 			}

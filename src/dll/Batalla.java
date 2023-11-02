@@ -39,6 +39,7 @@ public class Batalla {
 	public String eligirAtaque(Aliado mercury, Aliado mars, Aliado jupiter, Aliado venus) {
 		String[] respuesta = {mercury.getNombre(), mars.getNombre(), jupiter.getNombre(), venus.getNombre()};
 		int poder;
+		Aliado aliado = null;
 
 		 int opcion = JOptionPane.showOptionDialog(
 		            null,
@@ -52,46 +53,16 @@ public class Batalla {
 		        );
 
 		 if (opcion == 0) {
-			String[] poderes = {mercury.getPoder1(), mercury.getPoder2()};
-			poder = JOptionPane.showOptionDialog(
-		            null,
-		           "¿Que poder quieres usar?",
-		            "Batalla",
-		            JOptionPane.DEFAULT_OPTION,
-		            JOptionPane.PLAIN_MESSAGE,
-		            null,
-		            poderes,
-		            poderes[0]
-		        );
-			return mercury.usarPoder(poder);
+			aliado = mercury;
 		} else if (opcion == 1) {
-			String[] poderes = {mars.getPoder1(), mars.getPoder2()};
-			poder = JOptionPane.showOptionDialog(
-		            null,
-		           "¿Que poder quieres usar?",
-		            "Batalla",
-		            JOptionPane.DEFAULT_OPTION,
-		            JOptionPane.PLAIN_MESSAGE,
-		            null,
-		            poderes,
-		            poderes[0]
-		        );
-			return mars.usarPoder(poder);
+			aliado = mars;
 		} else if (opcion == 2) {
-			String[] poderes = {jupiter.getPoder1(), jupiter.getPoder2()};
-			poder = JOptionPane.showOptionDialog(
-		            null,
-		           "¿Que poder quieres usar?",
-		            "Batalla",
-		            JOptionPane.DEFAULT_OPTION,
-		            JOptionPane.PLAIN_MESSAGE,
-		            null,
-		            poderes,
-		            poderes[0]
-		        );
-			return jupiter.usarPoder(poder);
+			aliado = jupiter;
 		} else {
-			String[] poderes = {venus.getPoder1(), venus.getPoder2()};
+			aliado = venus;
+		} 
+		 
+		 String[] poderes = {aliado.getPoder1(), aliado.getPoder2(), "Eligir otra Sailor"};
 			poder = JOptionPane.showOptionDialog(
 		            null,
 		           "¿Que poder quieres usar?",
@@ -102,8 +73,12 @@ public class Batalla {
 		            poderes,
 		            poderes[0]
 		        );
-			return venus.usarPoder(poder);
-			} 
+			
+			if (poder == 2) {
+				return "none";
+			} else {
+				return aliado.usarPoder(poder);
+			}	
 	}
 	
 	public boolean definirGanador(Enemigo enemigo, String atke, String atka) {
@@ -180,7 +155,7 @@ public class Batalla {
 	
 	private int cargarPoderEnemigo(String enemigo) {
 		if (enemigo.equals("Eclipse anular, ¡manifiéstate!")) {
-			return 10;
+			return 5;
 		} else if (enemigo.equals("¡Ondas sonoras de la Luna Oscura!")) {
 			return 2;
 		} else if (enemigo.equals("¡Rocas afiladas de Ceres, dispersaos!")) {
