@@ -23,11 +23,11 @@ public class Main {
 
 		Connection cnx = new Conexion().conectar();
 		Validador valid = new Validador();
-//hihi
+
 		Historia sm = new Historia("Sailor Moon: Battle for Earth");
 		Decision ds = new Decision(true);
 		Batalla bt = new Batalla(0);
-		Jugador jugador = new Jugador(0, null, null, 0, 1);
+		Jugador jugador = new Jugador(0, "", null, 0, 1);
 
 		Personaje earth = new Personaje(null, "Earth", "¡Semillas de la Tierra, germinen!", "¡Ventiscas espirales de la Tierra!");
 		Aliado moon = new Aliado("Usagi", "Moon", "Tiara Lunar ¡Acción!", "¡Curación Lunar, Acción!", 3);

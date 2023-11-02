@@ -13,11 +13,18 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import net.miginfocom.swing.MigLayout;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.FlowLayout;
+import javax.swing.SwingConstants;
+import javax.swing.JSplitPane;
 
 public class MenuPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
 
 	/**
 	 * Launch the application.
@@ -39,32 +46,65 @@ public class MenuPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public MenuPrincipal() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 625, 416);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
+	
+		setSize(500, 500);
+		getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JTextArea dialogBox = new JTextArea();
-		contentPane.add(dialogBox, BorderLayout.SOUTH);
+		JPanel panelPrincipal = new JPanel();
+		getContentPane().add(panelPrincipal, BorderLayout.CENTER);
+		panelPrincipal.setLayout(new BorderLayout(0, 0));
 		
-		JTextArea statusBar = new JTextArea();
-		contentPane.add(statusBar, BorderLayout.NORTH);
+		JPanel panelSuperior = new JPanel();
+		panelPrincipal.add(panelSuperior, BorderLayout.NORTH);
+		panelSuperior.setLayout(new BorderLayout(0, 0));
 		
-		JLabel personajeImg = new JLabel("ch");
-		contentPane.add(personajeImg, BorderLayout.WEST);
+		JLabel lblNewLabel = new JLabel("Proyecto Sailor Moon");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		panelSuperior.add(lblNewLabel, BorderLayout.NORTH);
 		
-		JLabel fondoImg = new JLabel("bg");
-		contentPane.add(fondoImg, BorderLayout.CENTER);
+		JPanel panelInferior = new JPanel();
+		panelPrincipal.add(panelInferior, BorderLayout.SOUTH);
 		
-		JButton nextButton = new JButton("New button");
-		nextButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		contentPane.add(nextButton, BorderLayout.EAST);
+		JLabel lblNewLabel_1 = new JLabel("Desarrollado por: Lucas, Rodrigo, Juan");
+		panelInferior.add(lblNewLabel_1);
+		
+		JPanel panelAdentro = new JPanel();
+		panelPrincipal.add(panelAdentro, BorderLayout.CENTER);
+		panelAdentro.setLayout(new BorderLayout(0, 0));
+		
+		JSplitPane splitPane = new JSplitPane();
+		panelAdentro.add(splitPane, BorderLayout.CENTER);
+		
+		JPanel panelBoton = new JPanel();
+		splitPane.setLeftComponent(panelBoton);
+		panelBoton.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JButton btnNewButton = new JButton("New button");
+		panelBoton.add(btnNewButton);
+		
+		JButton btnNewButton_4 = new JButton("New button");
+		panelBoton.add(btnNewButton_4);
+		
+		JButton btnNewButton_3 = new JButton("New button");
+		panelBoton.add(btnNewButton_3);
+		
+		JLabel lblNewLabel_3 = new JLabel("New label");
+		panelBoton.add(lblNewLabel_3);
+		
+		JButton btnNewButton_2 = new JButton("New button");
+		panelBoton.add(btnNewButton_2);
+		
+		JButton btnNewButton_5 = new JButton("New button");
+		panelBoton.add(btnNewButton_5);
+		
+		JLabel lblNewLabel_2 = new JLabel("New label");
+		panelBoton.add(lblNewLabel_2);
+		
+		JButton btnNewButton_1 = new JButton("New button");
+		panelBoton.add(btnNewButton_1);
+		
+		JLabel lblNewLabel_4 = new JLabel("New label");
+		splitPane.setRightComponent(lblNewLabel_4);
+		
 	}
-
 }
