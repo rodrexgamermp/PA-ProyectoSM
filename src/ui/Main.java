@@ -23,7 +23,7 @@ public class Main {
 
 		Connection cnx = new Conexion().conectar();
 		Validador valid = new Validador();
-
+//hihi
 		Historia sm = new Historia("Sailor Moon: Battle for Earth");
 		Decision ds = new Decision(true);
 		Batalla bt = new Batalla(0);
